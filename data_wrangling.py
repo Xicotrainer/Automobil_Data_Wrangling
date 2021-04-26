@@ -1,6 +1,7 @@
 import pandas as pd
-import matplotlib.pylab as plt
+import matplotlib.pyplot as plt
 import numpy as np
+
 
 # Automobile data set has wenty-six atributes/columns
 headers = ["symboling",
@@ -31,21 +32,20 @@ headers = ["symboling",
 df = pd.read_csv("data.csv", names = headers)
 
 # There are many missing values
-print(df.sample(8))
+print(df.sample(8), "\n")
 
 # They will replaced by "NaN"
 df.replace("?", np.nan, inplace = True)
-print(df.sample(8))
 
 # Identify the number of missing values
 missing_data = df.isnull()
-print(missing_data.sample(8))
+print(missing_data.sample(8), "\n")
 for column in missing_data.columns.values.tolist():
 	print(column)
 	print(missing_data[column].value_counts(),"\n")
 
 # Replace by mean
-forChanging = ["normalized-losses", 
+forChanging = [ "normalized-losses", 
 				"bore",
 				"stroke",
 				"horsepower",
@@ -65,5 +65,51 @@ df.dropna(subset = ["price"], axis = 0, inplace = True)
 df.reset_index(drop = True, inplace = True)
 
 # Now, the data has no missing values
-print(df.sample(8))
-print(df.dtypes)
+print("\n", df.sample(8), "\n")
+
+# We make sure the data has the correct data format
+print(df.dtypes, "\n")
+
+# Actualize words to numbers
+forChanging = [ "normalized-losses", 
+				"bore",
+				"stroke",
+				"price",
+				"peak-rpm"]
+
+for atribute in forChanging:
+	df[atribute]= df[atribute].astype("float")
+
+# Data Standarization (International System of Units)
+df["city-L/100km"] = 235 / df ["city-mpg"]
+df["highway-L/100km"] = 235 / df["highway-mpg"]
+df.drop(columns = ["city-mpg","highway-mpg"])
+
+print(df.sample(8), "\n")
+
+# Data Normalization (between the maximum)
+forChanging = [ "length",
+				"width",
+				"height"]
+
+for atribute in forChanging:
+	df[atribute] = df[atribute] / df[atribute].max()
+print(df[forChanging].sample(8), "\n")
+
+
+# Binnig (Low-Mid-High meter)
+df["horsepower"] = df["horsepower"].astype(int, copy = True)
+
+plt.hist(df["horsepower"], bins = 3)
+plt.xlabel("Horsepower")
+plt.ylabel("Count")
+plt.title("Horsepower bins")
+plt.show()
+
+# Data actualization	
+horsepower_bins = np.linspace(df["horsepower"].min(), df["horsepower"].max(), 4)
+group_names = {"Low", "Medium", "Hight"}
+df["horsepower-binned"] = pd.cut(df["horsepower"], horsepower_bins, labels = group_names, include_lowest = True)
+
+print(df[["horsepower", "horsepower-binned"]].sample(8), "\n")
+print(df["horsepower-binned"].value_counts(), "\n")
