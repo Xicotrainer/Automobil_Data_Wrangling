@@ -113,3 +113,25 @@ df["horsepower-binned"] = pd.cut(df["horsepower"], horsepower_bins, labels = gro
 
 print(df[["horsepower", "horsepower-binned"]].sample(8), "\n")
 print(df["horsepower-binned"].value_counts(), "\n")
+
+# Dummy variables (1-0 stages for regresion models)
+dummy_variable_1 = pd.get_dummies(df["fuel-type"])
+dummy_variable_1.rename(columns = { 'gas':'fuel-type-gas', 
+									'diesel':'fuel-type-diesel'},
+									 inplace = True)
+
+df = pd.concat([df, dummy_variable_1], axis = 1)
+df.drop("fuel-type", axis = 1, inplace = True)
+
+dummy_variable_2 = pd.get_dummies(df["aspiration"])
+dummy_variable_2.rename(columns = { 'std':'aspiration-std',
+									'turbo': 'aspiration-turbo'}, 
+									inplace = True)
+
+df = pd.concat([df, dummy_variable_2], axis = 1)
+df.drop("aspiration", axis = 1, inplace = True)
+
+print(df.sample(8), "\n")
+
+
+df.to_csv('clean_data.csv')
