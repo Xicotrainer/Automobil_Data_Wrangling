@@ -1,0 +1,5 @@
+--- dummy_original.txt	2021-05-05 23:26:12.217059100 -0500
++++ dummy_fixed.txt	2021-05-05 23:27:39.104712500 -0500
+@@ -1 +1 @@
+-print('Its a trap, piu, piu, piu, hahaha {}'.format(32))
++print('Its a trap, piu, piu, piu, hahaha x{} :)'.format(32))
