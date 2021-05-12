@@ -1,3 +1,8 @@
 .DS_STORE
 
-clean_data.csv
+data.csv
+data_original.data
+dummy_fixed.txt
+dummy_original.txt
+dummy_original_patched.txt
+
