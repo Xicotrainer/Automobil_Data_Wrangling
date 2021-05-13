@@ -1,3 +1,7 @@
+from __future__ import print_function
+from ipywidgets import interact, interactive, fixed, interact_manual
+import ipywidgets as widgets
+
 import socket
 
 
@@ -8,7 +12,6 @@ def check_no_network():
 		return False
 	except:
 		return True
-
 
 def f_NQ():
 	print("This a NQ function")
@@ -27,6 +30,8 @@ def f_DAX():
 
 
 # for by a lyst of funvtions
+def recta(x):
+	return x
 
 def main():
 	activos = [ 
@@ -41,7 +46,6 @@ def main():
 		print("El costo de cada punto en el futuro del {} es de {} {} y su minimo desplazamiento es de {} pts.".
 			format(activo, costo_punto, moneda, tick))
 
-
 	f_list = [
 		(f_NQ, "Nasdaq"),
 		(f_ES, "S&P_500"),
@@ -51,5 +55,9 @@ def main():
 		
 		print("\n"+ msg + " Estamos mandado a llamar la función, esto es magico")
 		f_()
+
+	interact(recta, x = 10)
+
+
 
 main()
